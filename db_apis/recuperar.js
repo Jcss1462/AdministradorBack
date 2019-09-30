@@ -3,12 +3,6 @@ const database = require('../services/database.js');
 const oracledb = require('oracledb');
 
 
-const baseQuery =
-  `select 
-    username "username"
-    from usuario`;
-
-
 async function find(context) {
   //console.log(488888);
 
@@ -19,27 +13,29 @@ async function find(context) {
 
     console.log("Comenzando verificacion de existencia del correo");
 
-    let query;
-    const binds = {};
-    binds.username = context.email;
+    let recuperar = await recuperar_contraseña(context.email);
 
-    console.log("¿problemas?");
+    let prueba = recuperar.val;
 
-    query = baseQuery + `\nwhere username = :username`;
-
-    console.log("query= " + query);
-
-    let result = await database.simpleExecute(query, binds);
+    if (prueba != "0") {
+      console.log('Correo registra, comenzando el envio del email');
+      console.log('contraseña= '+prueba);
 
 
-    //enviar correo
-    //window.open('mailto:jcss1462@gmail.com?subject=subject&body=body');
 
-    console.log('Extraccion de datos finalizada');
-    return result.rows;
+      console.log('Extraccion de datos finalizada');
+      return fakeresult;
+
+    } else {
+
+      console.log('Usuario no registrado');
+      return fakeresult;
+
+    }
 
   } else {
 
+    console.log('Email no recibido');
     return fakeresult;
 
   }
@@ -48,5 +44,15 @@ async function find(context) {
 
 module.exports.find = find;
 
+const verificacion = `BEGIN :val := recuperar(:user); END;`;
 
+async function recuperar_contraseña(username) {
+  console.log('recuperacion empezo');
+  const binds = {};
+  binds.user = username;
+  binds.val = { dir: oracledb.BIND_OUT, type: oracledb.STRING, maxSize: 500000 };
+  const result = await database.simpleExecute(verificacion, binds);
+  console.log('recuperacion termino');
+  return result.outBinds;
+}
 
