@@ -3,6 +3,7 @@ const database = require('../services/database.js');
 const oracledb = require('oracledb');
 
 
+
 async function find(context) {
   //console.log(488888);
 
@@ -19,13 +20,26 @@ async function find(context) {
 
     if (prueba != "0") {
       console.log('Correo registra, comenzando el envio del email');
-      console.log('contraseña= '+prueba);
+      console.log('contraseña= ' + prueba);
 
 
+      let body={};
 
+      body.to=context.email;
+      body.asunto="Recuperacion de contraseña";
+      body.texto="Su contraseña es: "+"'"+prueba+"'";
+
+      var EmailCtrl = require('../controllers/mailCtrl');
+      EmailCtrl.sendEmail(body);
+
+    
+      console.log('¿funciona?');
       console.log('Extraccion de datos finalizada');
-      return fakeresult;
 
+      let result={};
+      result.val=1;
+
+      return result;
     } else {
 
       console.log('Usuario no registrado');

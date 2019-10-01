@@ -5,7 +5,6 @@ const varLogin = require('../controllers/login.js');
 const varRecuperar = require('../controllers/recuperar');
 
 
-
 router.route('/login')
     .get(varLogin.get);
     
