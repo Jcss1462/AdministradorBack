@@ -23,7 +23,7 @@ async function find(context) {
 
     let auto = await autenticacion(context.username, context.password);
 
-    let prueba = Number(auto.val);
+    let prueba = auto.val;
     console.log(prueba);
 
 
@@ -74,7 +74,7 @@ async function autenticacion(username, password) {
   const binds = {};
   binds.user = username;
   binds.pass = password;
-  binds.val = { dir: oracledb.BIND_OUT, type: oracledb.STRING, maxSize: 500000 };
+  binds.val = { dir: oracledb.BIND_OUT, type: oracledb.NUMBER, maxSize: 500000 };
   const result = await database.simpleExecute(verificacion, binds);
   console.log('autenticacion termino');
   return result.outBinds;

@@ -36,10 +36,15 @@ async function find(context) {
       console.log('¿funciona?');
       console.log('Extraccion de datos finalizada');
 
+      
+      let obj=[];
+
       let result={};
       result.val=1;
 
-      return result;
+      obj[0]=result;
+
+      return obj;
     } else {
 
       console.log('Usuario no registrado');
