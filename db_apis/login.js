@@ -8,9 +8,10 @@ const baseQuery =
     id_usuario "id_usuario",
     nombre "nombre",
     username "username",
-    id_tipo "id_tipo"
-    from usuario`;
-
+    tipo "tipo"
+    from usuario natural join TIPOUSUARIO`;
+    
+    
 
 async function find(context) {
   //console.log(488888);
