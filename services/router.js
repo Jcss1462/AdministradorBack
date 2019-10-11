@@ -15,6 +15,6 @@ router.route('/recuperar')
 
 
 router.route('/usser')
-    .get(varUsser.post);
+    .post(varUsser.post);
 
 module.exports = router;
