@@ -4,6 +4,7 @@ const router = new express.Router();
 const varLogin = require('../controllers/login.js');
 const varRecuperar = require('../controllers/recuperar');
 const varUsser = require('../controllers/usser');
+const varTrabajadorEntidad = require('../controllers/trabajador_entidad');
 
 
 router.route('/login')
@@ -17,5 +18,10 @@ router.route('/recuperar')
 router.route('/usser')
     .post(varUsser.post)
     .get(varUsser.get);
+
+
+router.route('/trabajadorentidades')
+    .get(varTrabajadorEntidad.get);
+
 
 module.exports = router;
