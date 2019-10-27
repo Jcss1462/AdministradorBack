@@ -4,10 +4,11 @@ const database = require('../services/database.js');
 
 
 const baseQuery =
-  `select 
+  `select
+    id_entidad "id_entidad", 
     entidad "entidad",
-    count(DISTINCT(id_sucursal)) "cantidad_sucursales"
-   from usuario natural join Trabajador_has_Entidad natural join  entidad natural join sucursales
+    cantidad "cantidad_sucursales"
+   from TRABAJADOR_HAS_ENTIDAD natural join entidad_canitidad_sucursales
   `;
 
 
@@ -24,7 +25,7 @@ async function find(context) {
     const binds = {};
 
     binds.id_usuario = Number(context.id_usuario);
-    query += `\nwhere id_usuario = :id_usuario group by entidad`;
+    query += `\nwhere TRABAJADOR_HAS_ENTIDAD.ID_USUARIO = :id_usuario`;
 
     let result = await database.simpleExecute(query, binds);
 
