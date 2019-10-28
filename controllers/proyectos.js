@@ -1,14 +1,13 @@
-const sucursal = require('../db_apis/sucursales');
+const proyectos = require('../db_apis/proyectos');
 
 
-function getSucrursalFromReq(req) {
-  const newSucursal = {
-    sucursal: req.body.sucursal,
-    direccion: req.body.direccion,
-    id_entidad: req.body.id_entidad,
-
+function getProyectoFromReq(req) {
+  const newProyecto = {
+    proyecto: req.body.proyecto,
+    id_sucursal: Number(req.body.id_sucursal),
+    id_estado: Number(req.body.id_estado),
   };
-  return newSucursal;
+  return newProyecto;
 }
 
 async function post(req, res, next) {
@@ -17,10 +16,9 @@ async function post(req, res, next) {
   //console.log(req);
 
   try {
-    let newSucursal = getSucrursalFromReq(req);
+    let newProyecto= getProyectoFromReq(req);
 
-   
-    let resultado =await sucursal.create(newSucursal);
+    let resultado =await proyectos.create(newProyecto);
 
     res.status(201).json(resultado);
 
@@ -40,18 +38,18 @@ async function get(req, res, next) {
   try {
     const context = {};
     //le doy un id al contexto segun lo que viene en el req
-    context.id_entidad=req.query.id_entidad;
     context.id_sucursal=req.query.id_sucursal;
+    context.id_proyecto=req.query.id_proyecto;
 
 
     let rows;
 
     if(req.query.razon=="nombre"){
       console.log("nombre");
-      rows=await sucursal.getNameSucursal(context)
+      rows=await proyectos.getNameProyecto(context)
     }else{
       console.log("todos");
-      rows=await sucursal.find(context);
+      rows=await proyectos.find(context);
     }
 
     

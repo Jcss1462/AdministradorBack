@@ -5,10 +5,10 @@ const oracledb = require('oracledb');
 
 const baseQuery =
   `select 
-    id_sucursal "id_sucursal",
-    sucursal "sucursal", 
-    direccion "direccion"
-    from sucursales
+    id_proyecto "id_proyecto",
+    proyecto "proyecto", 
+    id_estado "id_estado"
+    from proyectos
   `;
 
 
@@ -18,46 +18,6 @@ async function find(context) {
   let fakeresult = {};
 
   let query = baseQuery;
-  const binds = {};
-
-
-  if (context.id_entidad) {
-
-    
-    binds.id_entidad = Number(context.id_entidad);
-    query += `\nwhere id_entidad = :id_entidad`;
-
-    let result = await database.simpleExecute(query, binds);
-
-    console.log(result);
-
-    return result.rows;
-
-  } else {
-
-    return fakeresult;
-
-  }
-
-}
-
-module.exports.find = find;
-
-
-const selectSucursal=
-  `select
-    id_sucursal "id_sucursal", 
-    sucursal "sucursal",
-    direccion "direccion"
-    from sucursales
-  `;
-
-async function getNameSucursal(context) {
-  //console.log(488888);
-
-  let fakeresult = {};
-
-  let query = selectSucursal;
   const binds = {};
 
 
@@ -81,28 +41,67 @@ async function getNameSucursal(context) {
 
 }
 
-module.exports.getNameSucursal = getNameSucursal;
+module.exports.find = find;
+
+
+const selectSucursal=
+  `select
+    proyecto "proyecto", 
+    id_estado "id_estado"
+    from proyectos
+  `;
+
+async function getNameProyecto(context) {
+  //console.log(488888);
+
+  let fakeresult = {};
+
+  let query = selectSucursal;
+  const binds = {};
+
+
+  if (context.id_proyecto) {
+
+    
+    binds.id_proyecto = Number(context.id_proyecto);
+    query += `\nwhere id_proyecto = :id_proyecto`;
+
+    let result = await database.simpleExecute(query, binds);
+
+    console.log(result);
+
+    return result.rows;
+
+  } else {
+
+    return fakeresult;
+
+  }
+
+}
+
+module.exports.getNameProyecto = getNameProyecto;
 //////////////////////////////////////////////////////////////////////
-const createEntidad =
-  `insert into sucursales (
-    sucursal,
-    direccion,
-    id_entidad
+const createProyecto =
+  `insert into proyectos (
+    proyecto,
+    id_sucursal,
+    id_estado
   ) values (
-    :sucursal,
-    :direccion,
-    :id_entidad
+    :proyecto,
+    :id_sucursal,
+    :id_estado
   )`;
 
 async function create(uss) {
 
   
 
-  const sucursal = Object.assign({}, uss);
+  const proyecto = Object.assign({}, uss);
 
 
   
-  let result=await database.simpleExecute(createEntidad, sucursal);
+  let result=await database.simpleExecute(createProyecto, proyecto);
 
   
   return result.rowsAffected;
