@@ -10,12 +10,12 @@ function getEntidadFromReq(req) {
 
 async function post(req, res, next) {
 
-  
+
   //console.log(req);
 
   try {
     let newEntidad = getEntidadFromReq(req);
-    
+
     //creo un nueva entidad
     newEntidad = await trbajadorEntidad.create(newEntidad);
 
@@ -28,12 +28,12 @@ async function post(req, res, next) {
 
     let resultado = await trbajadorEntidad.asignar(asignacion);
     res.status(201).json(resultado);
-  
+
   } catch (err) {
     next(err);
   }
 }
- 
+
 module.exports.post = post;
 
 
@@ -46,27 +46,23 @@ async function get(req, res, next) {
     const context = {};
     //le doy un id al contexto segun lo que viene en el req
     context.id_usuario = req.query.id_usuario;
-    
+    context.id_entidad=req.query.id_entidad;
 
-    ///retricciones
-    context.skip = parseInt(req.query.skip, 10);
-    context.limit = parseInt(req.query.limit, 10);
 
     
-
-    //clasificacion  
-    context.sort = req.query.sort;
-
-
-    ///////filtrado
-    context.genero =req.query.genero;
-    
-
+    let rows;
     //busca lo enviado
-    const rows = await trbajadorEntidad.find(context);
+    if (req.query.razon == "exclucion") {
+      rows = await trbajadorEntidad.find(context);
+    }else if(req.query.razon=="nombre"){
+      console.log(1234);
+      rows = await trbajadorEntidad.getName(context);
+    }
+
+    console.log(5678);
 
     console.log(rows.length);
-    
+
 
     if (req.params.id) {
       if (rows.length === 1) {

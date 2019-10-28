@@ -6,6 +6,7 @@ const varRecuperar = require('../controllers/recuperar');
 const varUsser = require('../controllers/usser');
 const varEntidades = require('../controllers/entidades');
 const varTrabajadorEntidad = require('../controllers/trabajador_entidad');
+const varSucursales= require('../controllers/sucursales');
 
 
 router.route('/login')
@@ -29,6 +30,11 @@ router.route('/entidades')
 router.route('/trabajadorentidades')
     .get(varTrabajadorEntidad.get);
     //.post(varTrabajadorEntidad.post);
+
+router.route('/sucursales')
+    .get(varSucursales.get)
+    .post(varSucursales.post);
+   
 
 
 

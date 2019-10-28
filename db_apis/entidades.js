@@ -46,6 +46,43 @@ async function find(context) {
 
 module.exports.find = find;
 
+const selectEntidad =
+  `select 
+    entidad "entidad"
+    from entidad
+  `;
+
+async function getName(context) {
+  //console.log(488888);
+
+  let fakeresult = {};
+
+  let query = selectEntidad;
+  const binds = {};
+
+
+  if (context.id_entidad) {
+
+    
+    binds.id_entidad = Number(context.id_entidad);
+    query += `\nwhere id_entidad = :id_entidad`;
+
+    let result = await database.simpleExecute(query, binds);
+
+    console.log(result);
+
+    return result.rows;
+
+  } else {
+
+    return fakeresult;
+
+  }
+
+}
+
+module.exports.getName = getName;
+
 //////////////////////////////////////////////////////////////////////
 const createEntidad =
   `insert into entidad (
