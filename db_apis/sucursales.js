@@ -7,8 +7,10 @@ const baseQuery =
   `select 
     id_sucursal "id_sucursal",
     sucursal "sucursal", 
-    direccion "direccion"
-    from sucursales
+    direccion "direccion",
+    cantidad "cantidad"
+    from sucursales natural join
+    proyectos_activos
   `;
 
 

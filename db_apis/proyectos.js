@@ -7,8 +7,9 @@ const baseQuery =
   `select 
     id_proyecto "id_proyecto",
     proyecto "proyecto", 
-    id_estado "id_estado"
-    from proyectos
+    id_estado "id_estado",
+    estado "estado"
+    from proyectos natural join estadoproyecto
   `;
 
 
