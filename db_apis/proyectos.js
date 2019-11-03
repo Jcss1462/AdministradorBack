@@ -87,11 +87,13 @@ const createProyecto =
   `insert into proyectos (
     proyecto,
     id_sucursal,
-    id_estado
+    id_estado,
+    fecha_inicio
   ) values (
     :proyecto,
     :id_sucursal,
-    :id_estado
+    :id_estado,
+    CURRENT_TIMESTAMP
   )`;
 
 async function create(uss) {
