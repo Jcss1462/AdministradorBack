@@ -9,6 +9,7 @@ const varTrabajadorEntidad = require('../controllers/trabajador_entidad');
 const varSucursales= require('../controllers/sucursales');
 const varProyectos= require('../controllers/proyectos');
 const varFases= require('../controllers/fases');
+const varIngresos= require('../controllers/ingresos');
 
 
 router.route('/login')
@@ -44,6 +45,10 @@ router.route('/proyectos')
 router.route('/fases')
     .get(varFases.get)
     .post(varFases.post);
+
+router.route('/ingresos')
+    .get(varIngresos.get)
+    .post(varIngresos.post);
    
 
 
