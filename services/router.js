@@ -48,6 +48,8 @@ router.route('/fases')
 
 router.route('/ingresos')
     .get(varIngresos.get)
+    .put(varIngresos.put)
+    .delete(varIngresos.del)
     .post(varIngresos.post);
    
 

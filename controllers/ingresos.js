@@ -31,9 +31,40 @@ async function post(req, res, next) {
 }
 
 module.exports.post = post;
+//////////////////////////////////////////////////
+
+function getIngresoFromreq(req) {
+  const Ingreso = {
+    id_ingreso: Number(req.body.id_ingreso),
+    id_estadoingreso: Number(req.body.id_estadoingreso),
+    ingreso: Number(req.body.ingreso),
+    interes: Number(req.body.interes),
+    fecha_ingreso: req.body.fecha_ingreso,
+  };
+  return Ingreso;
+}
+
+async function put(req, res, next) {
+  try {
+    let ingreso = getIngresoFromreq(req);
+
+    ingreso = await ingresos.update(ingreso);
+
+    if (ingreso !== null) {
+      res.status(200).json(ingreso);
+    } else {
+      res.status(404).end();
+    }
+  } catch (err) {
+    next(err);
+  }
+}
+
+module.exports.put = put;
 
 
-/////////////////////////////////////
+
+////////////////////////////////////////////////
 async function get(req, res, next) {
 
   console.log("/natun/n")
@@ -71,3 +102,25 @@ async function get(req, res, next) {
 
 // se exporrta para usarla en el modulo
 module.exports.get = get;
+
+/////////////////////////////////////////////////////////////////////
+async function del(req, res, next) {
+  try {
+    const id_ingreso = parseInt(req.query.id_ingreso);
+ 
+    console.log(55555);
+    const success = await ingresos.del(id_ingreso);
+
+    console.log(55555);
+ 
+    if (success) {
+      res.status(204).end();
+    } else {
+      res.status(404).end();
+    }
+  } catch (err) {
+    next(err);
+  }
+}
+ 
+module.exports.del = del;

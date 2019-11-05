@@ -48,6 +48,29 @@ async function find(context) {
 }
 
 module.exports.find = find;
+/////////////////////////////////////////////////////////////////////
+
+const updateSql =
+ `update ingresos
+    set id_estadoingreso = :id_estadoingreso,
+    ingreso = :ingreso,
+    interes = :interes,
+    fecha_ingreso = :fecha_ingreso
+  where id_ingreso = :id_ingreso`;
+ 
+async function update(emp) {
+  const ingreso = Object.assign({}, emp);
+  const result = await database.simpleExecute(updateSql, ingreso);
+ 
+  if (result.rowsAffected && result.rowsAffected === 1) {
+    return ingreso;
+  } else {
+    return null;
+  }
+}
+ 
+module.exports.update = update;
+
 
 
 //////////////////////////////////////////////////////////////////////
@@ -80,3 +103,29 @@ async function create(uss) {
 }
 
 module.exports.create = create;
+
+////////////////////////////////////////////////////////////////////////
+
+const deleteSql =
+ `begin
+
+    delete from ingresos
+    where id_ingreso = :id_ingreso;
+
+  end;`
+
+async function del(id) {
+  const binds = {
+    id_ingreso: id,
+  }
+  const result = await database.simpleExecute(deleteSql, binds);
+
+  console.log(1);
+  console.log(result.rowsAffected);
+  console.log(1);
+
+
+  return result.rowsAffected;
+}
+
+module.exports.del = del;
