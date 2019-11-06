@@ -110,7 +110,7 @@ async function del(req, res, next) {
  
     console.log(55555);
     const success = await ingresos.del(id_ingreso);
-
+    console.log(success);
     console.log(55555);
  
     if (success) {

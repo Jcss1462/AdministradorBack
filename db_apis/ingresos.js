@@ -112,20 +112,26 @@ const deleteSql =
     delete from ingresos
     where id_ingreso = :id_ingreso;
 
+    :rowcount := sql%rowcount;
+
   end;`
 
 async function del(id) {
   const binds = {
     id_ingreso: id,
+    rowcount: {
+      dir: oracledb.BIND_OUT,
+      type: oracledb.NUMBER
+    }
   }
   const result = await database.simpleExecute(deleteSql, binds);
 
   console.log(1);
-  console.log(result.rowsAffected);
+  console.log(result.outBinds.rowcount === 1);
   console.log(1);
 
 
-  return result.rowsAffected;
+  return result.outBinds.rowcount === 1;;
 }
 
 module.exports.del = del;
