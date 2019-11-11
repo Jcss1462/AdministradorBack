@@ -55,11 +55,14 @@ const updateSql =
     set id_estadoingreso = :id_estadoingreso,
     ingreso = :ingreso,
     interes = :interes,
-    fecha_ingreso = :fecha_ingreso
+    fecha_ingreso = :fecha_ingreso,
+    cuotas =:cuotas
   where id_ingreso = :id_ingreso`;
  
 async function update(emp) {
   const ingreso = Object.assign({}, emp);
+
+  console.log(ingreso);
   const result = await database.simpleExecute(updateSql, ingreso);
  
   if (result.rowsAffected && result.rowsAffected === 1) {

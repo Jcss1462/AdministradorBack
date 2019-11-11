@@ -40,6 +40,7 @@ function getIngresoFromreq(req) {
     ingreso: Number(req.body.ingreso),
     interes: Number(req.body.interes),
     fecha_ingreso: req.body.fecha_ingreso,
+    cuotas: Number(req.body.cuotas)
   };
   return Ingreso;
 }
