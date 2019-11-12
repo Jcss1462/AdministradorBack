@@ -10,6 +10,8 @@ const varSucursales= require('../controllers/sucursales');
 const varProyectos= require('../controllers/proyectos');
 const varFases= require('../controllers/fases');
 const varIngresos= require('../controllers/ingresos');
+const varGastos= require('../controllers/gastos');
+
 
 
 router.route('/login')
@@ -51,6 +53,10 @@ router.route('/ingresos')
     .put(varIngresos.put)
     .delete(varIngresos.del)
     .post(varIngresos.post);
+
+router.route('/gastos')
+    .get(varGastos.get)
+    .post(varGastos.post);
    
 
 
