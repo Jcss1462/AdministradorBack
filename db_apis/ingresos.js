@@ -109,32 +109,18 @@ module.exports.create = create;
 
 ////////////////////////////////////////////////////////////////////////
 
-const deleteSql =
- `begin
-
-    delete from ingresos
-    where id_ingreso = :id_ingreso;
-
-    :rowcount := sql%rowcount;
-
-  end;`
+const deleteSql = `BEGIN :val := eliminarIngreso(:id); END;`;
 
 async function del(id) {
-  const binds = {
-    id_ingreso: id,
-    rowcount: {
-      dir: oracledb.BIND_OUT,
-      type: oracledb.NUMBER
-    }
-  }
+  
+  const binds = {};
+  binds.id = Number(id);
+  binds.val = { dir: oracledb.BIND_OUT, type: oracledb.NUMBER, maxSize: 500000 };
+
   const result = await database.simpleExecute(deleteSql, binds);
 
-  console.log(1);
-  console.log(result.outBinds.rowcount === 1);
-  console.log(1);
-
-
-  return result.outBinds.rowcount === 1;;
+  
+  return result.outBinds;
 }
 
 module.exports.del = del;

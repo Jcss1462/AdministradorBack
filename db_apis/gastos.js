@@ -8,13 +8,15 @@ const baseQuery =
     id_gasto "id_gasto",
     entidad "entidad", 
     presupuesto_gasto "presupuesto_gasto",
+    pago_pactado"pago_pactado",
     TO_CHAR(fecha_presupuesto_gasto, 'DD.MM.YYYY') "fecha_presupuesto_gasto",
     estadogasto "estadogasto",
     pago "pago",
-    fecha_pago "fecha_pago",
+    TO_CHAR(fecha_pago, 'DD.MM.YYYY') "fecha_pago",
     tipocorte "tipocorte",
-    cuotas "cuotas"
-    from estadogasto natural join gastos natural join tipocorte
+    cuotas "cuotas",
+    interes "interes"
+    from estadogasto natural join gastos LEFT OUTER JOIN tipocorte on gastos.ID_TIPOCORTE=tipocorte.ID_TIPOCORTE
   `;
 
 
@@ -51,22 +53,24 @@ module.exports.find = find;
 /////////////////////////////////////////////////////////////////////
 
 const updateSql =
- `update ingresos
-    set id_estadoingreso = :id_estadoingreso,
-    ingreso = :ingreso,
+ `update gastos
+    set id_tipocorte = :id_tipocorte,
+    cuotas = :cuotas,
+    pago_pactado = :pago_pactado,
+    id_estadogasto = :id_estadogasto,
     interes = :interes,
-    fecha_ingreso = :fecha_ingreso,
-    cuotas =:cuotas
-  where id_ingreso = :id_ingreso`;
+    pago = :pago,
+    fecha_pago = :fecha_pago
+  where id_gasto = :id_gasto`;
  
 async function update(emp) {
-  const ingreso = Object.assign({}, emp);
+  const gasto = Object.assign({}, emp);
 
-  console.log(ingreso);
-  const result = await database.simpleExecute(updateSql, ingreso);
+  console.log(gasto);
+  const result = await database.simpleExecute(updateSql, gasto);
  
   if (result.rowsAffected && result.rowsAffected === 1) {
-    return ingreso;
+    return gasto;
   } else {
     return null;
   }
@@ -83,17 +87,13 @@ const createGasto =
     presupuesto_gasto,
     fecha_presupuesto_gasto,
     id_estadogasto,
-    id_tipocorte,
-    id_fases,
-    cuotas
+    id_fases
   ) values (
     :entidad,
     :presupuesto_gasto,
     :fecha_presupuesto_gasto,
     :id_estadogasto,
-    :id_tipocorte,
-    :id_fases,
-    :cuotas
+    :id_fases
   )`;
 
 async function create(uss) {
@@ -111,32 +111,19 @@ module.exports.create = create;
 
 ////////////////////////////////////////////////////////////////////////
 
-const deleteSql =
- `begin
 
-    delete from ingresos
-    where id_ingreso = :id_ingreso;
-
-    :rowcount := sql%rowcount;
-
-  end;`
+const deleteSql = `BEGIN :val := eliminarGasto(:id); END;`;
 
 async function del(id) {
-  const binds = {
-    id_ingreso: id,
-    rowcount: {
-      dir: oracledb.BIND_OUT,
-      type: oracledb.NUMBER
-    }
-  }
+
+  const binds = {};
+  binds.id = Number(id);
+  binds.val = { dir: oracledb.BIND_OUT, type: oracledb.NUMBER, maxSize: 500000 };
+
   const result = await database.simpleExecute(deleteSql, binds);
 
-  console.log(1);
-  console.log(result.outBinds.rowcount === 1);
-  console.log(1);
-
-
-  return result.outBinds.rowcount === 1;;
+  
+  return result.outBinds;
 }
 
 module.exports.del = del;

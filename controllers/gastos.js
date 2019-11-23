@@ -7,9 +7,7 @@ function getGastoFromReq(req) {
     presupuesto_gasto: Number(req.body.presupuesto_gasto),
     fecha_presupuesto_gasto: req.body.fecha_presupuesto_gasto,
     id_estadogasto: Number(req.body.id_estadogasto),
-    id_tipocorte: Number(req.body.id_tipocorte),
     id_fases: Number(req.body.id_fases),
-    cuotas: Number(req.body.cuotas),
   };
   return newGasto;
 }
@@ -34,26 +32,29 @@ async function post(req, res, next) {
 module.exports.post = post;
 //////////////////////////////////////////////////
 
-function getIngresoFromreq(req) {
-  const Ingreso = {
-    id_ingreso: Number(req.body.id_ingreso),
-    id_estadoingreso: Number(req.body.id_estadoingreso),
-    ingreso: Number(req.body.ingreso),
+function getGastoFromreq(req) {
+  const Gasto = {
+    id_gasto: Number(req.body.id_gasto),
+    pago_pactado: Number(req.body.pago_pactado),
+    id_tipocorte: Number(req.body.id_tipocorte),
+    cuotas: Number(req.body.cuotas),
+    id_estadogasto: Number(req.body.id_estadogasto),
     interes: Number(req.body.interes),
-    fecha_ingreso: req.body.fecha_ingreso,
-    cuotas: Number(req.body.cuotas)
+    pago: Number(req.body.pago),
+    fecha_pago: req.body.fecha_pago
   };
-  return Ingreso;
+  return Gasto;
 }
 
 async function put(req, res, next) {
   try {
-    let ingreso = getIngresoFromreq(req);
+    let gasto = getGastoFromreq(req);
 
-    ingreso = await gastos.update(ingreso);
+    //console.log(gasto);
+    gasto = await gastos.update(gasto);
 
-    if (ingreso !== null) {
-      res.status(200).json(ingreso);
+    if (gasto !== null) {
+      res.status(200).json(gasto);
     } else {
       res.status(404).end();
     }
@@ -107,11 +108,13 @@ module.exports.get = get;
 
 /////////////////////////////////////////////////////////////////////
 async function del(req, res, next) {
+
+  
   try {
-    const id_ingreso = parseInt(req.query.id_ingreso);
+    const id_gasto = parseInt(req.query.id_gasto);
  
     console.log(55555);
-    const success = await gastos.del(id_ingreso);
+    const success = await gastos.del(id_gasto);
     console.log(success);
     console.log(55555);
  

@@ -56,6 +56,8 @@ router.route('/ingresos')
 
 router.route('/gastos')
     .get(varGastos.get)
+    .put(varGastos.put)
+    .delete(varGastos.del)
     .post(varGastos.post);
    
 
