@@ -11,6 +11,7 @@ const varProyectos= require('../controllers/proyectos');
 const varFases= require('../controllers/fases');
 const varIngresos= require('../controllers/ingresos');
 const varGastos= require('../controllers/gastos');
+const varSubGastos= require('../controllers/subgastos');
 
 
 
@@ -60,7 +61,9 @@ router.route('/gastos')
     .delete(varGastos.del)
     .post(varGastos.post);
    
-
+router.route('/subgastos')
+    .get(varSubGastos.get)
+    .put(varSubGastos.put);
 
 
 module.exports = router;
