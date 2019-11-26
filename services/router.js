@@ -13,6 +13,7 @@ const varIngresos= require('../controllers/ingresos');
 const varGastos= require('../controllers/gastos');
 const varSubGastos= require('../controllers/subgastos');
 const varClienteSucursales= require('../controllers/cliente-sucursal');
+const varListaInversiones= require('../controllers/lista-inversiones');
 
 
 
@@ -69,6 +70,10 @@ router.route('/subgastos')
 router.route('/clientesucursales')
     .get(varClienteSucursales.get)
     .post(varClienteSucursales.post);
+
+router.route('/listaInversiones')
+    .get(varListaInversiones.get)
+    .post(varListaInversiones.post);
 
 
 module.exports = router;
